@@ -23,5 +23,10 @@
     "psr-4": {
       "Amara\\Varcon\\": ["src/Amara/Varcon"]
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Amara\\Varcon\\Tests\\": ["tests/Amara/Varcon"]
+    }
   }
 }
