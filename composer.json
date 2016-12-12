@@ -1,0 +1,32 @@
+{
+  "name": "amara/varcon",
+  "description": "A library to convert between different English spellings",
+  "version": "v1.0.0",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Loran Mutafov",
+      "email": "loran.mutafov@amara.com"
+    },
+    {
+      "name": "Ross Motley",
+      "email": "ross.motley@amara.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.0,<7.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "Amara\\Varcon\\": ["src/Amara/Varcon"]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Amara\\Varcon\\Tests\\": ["tests/Amara/Varcon"]
+    }
+  }
+}
