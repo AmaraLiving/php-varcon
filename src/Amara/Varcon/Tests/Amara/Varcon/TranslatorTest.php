@@ -1,6 +1,6 @@
 <?php
 
-namespace Amara\Bundle\VarconBundle\Tests\Integration\Service;
+namespace Amara\Varcon\Tests;
 
 use Amara\Varcon\Translator;
 use PHPUnit_Framework_TestCase;

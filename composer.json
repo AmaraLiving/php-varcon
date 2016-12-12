@@ -21,7 +21,6 @@
   },
   "autoload": {
     "psr-4": {
-      "Tests\\": ["tests"],
       "Amara\\Varcon\\": ["src/Amara/Varcon"]
     }
   }
