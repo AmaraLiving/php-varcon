@@ -43,10 +43,6 @@ class TranslationProvider implements TranslationProviderInterface
     {
         $fileHandle = fopen($this->filePath, 'r');
 
-        if (!$fileHandle) {
-            throw new \RuntimeException(sprintf('Unable to open file: %s', $filename));
-        }
-
         $trans = [];
 
         while (false !== ($line = stream_get_line($fileHandle, null, PHP_EOL.PHP_EOL))) {

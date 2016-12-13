@@ -58,23 +58,20 @@ class Util
      * A B: absinthe | :2
      *
      * @param string $_
-     * @param mixed $n  This variable is only used in the varcon split command, so might be unnecessary
      *
      * @return array
      */
-    public function readline_no_expand($_, $n = null)
+    public function readline_no_expand($_)
     {
         $_ = trim($_, PHP_EOL); // A: absinthe / AV B: absinth | :1
 
         $dn = explode(' | ', $_); // [ 'A: absinthe / AV B: absinth', ':1' ]
 
         if (count($dn) > 2) {
-            throw new \RuntimeException('Invalid format, there should be 1 horizontal line at most');
+            throw new \RuntimeException('Invalid format, there should be 1 vertical line at most');
         }
 
         $d = explode(' / ', $dn[0]); // [ 0 => 'A: absinthe', 1 => 'AV B: absinth' ]
-
-        $fragile = false;
 
         // The keys of $r will be spellings - A, B, Z, etc - see $this->map
         $r = [];
@@ -96,11 +93,6 @@ class Util
                 $matched = preg_match('/^([ABZCD_*Q])([.01234vVx-]?)(\d)?$/', $___, $sVNum);
                 if (1 !== $matched) {
                     throw new \RuntimeException(sprintf('Bad category: %s', $___));
-                }
-
-                // But if there IS a number
-                if (isset($sVNum[3])) {
-                    $fragile = true;
                 }
 
                 list(
@@ -129,47 +121,16 @@ class Util
 
         foreach ($r as &$read) {
             if (isset($read[0]) && count($read[0]) > 1) {
-                // Prepends all except the first element - from [0] to [1] = perl unshift with splice 1
+                // Move the extra element from [0] to [1] = perl unshift with splice 1
+                // i.e. Marks the already-equal variant as "equal" by moving it to the array's equal-key - [1]
+                // This is done to avoid marking equal translations as questionable
+
+                if (!isset($read[1])) {
+                    $read[1] = [];
+                }
+
                 $read[1] = array_merge(array_splice($read[0], 1), $read[1]);
             }
-        }
-
-        if (null !== $n) {
-            if ($fragile) {
-                $n->fragile = true;
-                $n->orig_data = $dn[0];
-            }
-
-            // Most thorough note example: (-) <N> journalist
-
-            $__ = $dn[1];
-            $n->_ = $__;
-            // Looks for (-) in the note section, meaning an uncommon usage
-            if (1 === preg_match('/^ *\(-\)/', $__)) {
-                $n->uncommon = true;
-
-                $__ = trim($__);
-
-                // Gets rid of the (-)
-                $__ = substr($__, 3);
-            }
-
-            // Looks for <POS> in the note section, denoting a speech/sentence part (I think)
-            // <N> should mean a noun
-            // <Adj> should mean an adjective
-            // etc...
-            if (1 === preg_match('/^ *<(.+?)>/', $__, $pos)) {
-                $n->pos = $pos[1];
-
-                $__ = trim($__);
-
-                // Gets rid of the <POS>
-                $__ = substr($__, strlen($pos[1]));
-            }
-
-            $__ = trim($__);
-
-            $n->note = $__;
         }
 
         return $r;
@@ -179,13 +140,12 @@ class Util
      * Read a line and fill in the gaps
      *
      * @param string $_
-     * @param object|null $n
      *
      * @return array
      */
-    public function readline($_, $n = null)
+    public function readline($_)
     {
-        $r = $this->readline_no_expand($_, $n);
+        $r = $this->readline_no_expand($_);
 
         // If there is no British "ize", use good ole classic British
         if (isset($r['B']) && !isset($r['Z'])) {
@@ -206,58 +166,9 @@ class Util
     }
 
     /**
-     * Flatten a translation array
-     *
-     * @param array $p
-     *
-     * @return array
-     */
-    public function flatten(array $p)
-    {
-        $r = [];
-
-        foreach ($p as $key => $pItem) {
-            for ($v = -1; $v < static::MAX_VARIANT_LEVEL; $v++) {
-                if (!isset($pItem[$v+1])) {
-                    continue;
-                }
-
-                $vs = ($v == -1 ? '' : $v);
-                $r[$key.$vs] = [ $p[$key][$v+1] ];
-            }
-        }
-
-        return $r;
-    }
-
-    /**
-     * Reverses a flattened array
-     *
-     * @param array $flattened
-     *
-     * @return array
-     */
-    public function reverse(array $flattened)
-    {
-        $r = [];
-
-        foreach ($flattened as $tag => $words) {
-            foreach ($words as $word) {
-                if (!isset($r[$word])) {
-                    $r[$word] = [];
-                }
-
-                array_push($r[$word], $tag);
-            }
-        }
-
-        return $r;
-    }
-
-    /**
      * Should the given line should not be processed
      *
-     * @param $_
+     * @param string $_
      *
      * @return bool
      */

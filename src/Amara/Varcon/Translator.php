@@ -12,16 +12,16 @@ class Translator
     const QUESTIONABLE_MARK = 2;
 
     /**
-     * @var TranslationProvider
+     * @var TranslationProviderInterface
      */
     private $provider;
 
     /**
      * Translator constructor.
      *
-     * @param TranslationProvider|null $provider
+     * @param TranslationProviderInterface|null $provider
      */
-    public function __construct(TranslationProvider $provider = null)
+    public function __construct(TranslationProviderInterface $provider = null)
     {
         if (null === $provider) {
             $provider = new TranslationProvider;
