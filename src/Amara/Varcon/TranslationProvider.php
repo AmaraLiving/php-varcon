@@ -41,6 +41,10 @@ class TranslationProvider implements TranslationProviderInterface
      */
     public function getTranslations($from, $to, $threshold = 80)
     {
+        if (!file_exists($this->filePath)) {
+            throw new \RuntimeException(sprintf('File not found: %s', $this->filePath));
+        }
+
         $fileHandle = fopen($this->filePath, 'r');
 
         $trans = [];
