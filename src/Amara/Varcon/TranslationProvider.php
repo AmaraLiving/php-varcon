@@ -41,11 +41,11 @@ class TranslationProvider implements TranslationProviderInterface
      */
     public function getTranslations($from, $to, $threshold = 80)
     {
-        $fileHandle = fopen($this->filePath, 'r');
-
-        if (!$fileHandle) {
-            throw new \RuntimeException(sprintf('Unable to open file: %s', $filename));
+        if (!file_exists($this->filePath)) {
+            throw new \RuntimeException(sprintf('File not found: %s', $this->filePath));
         }
+
+        $fileHandle = fopen($this->filePath, 'r');
 
         $trans = [];
 
