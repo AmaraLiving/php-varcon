@@ -49,12 +49,29 @@ class Translator
         $return = [];
 
         foreach ($words as $w) {
+            $originalWord = $w;
+
+            $ucFirst = $this->isFirstLetterUppercase($originalWord);
+            $allCaps = $this->isWholeStringUppercase($originalWord);
+
+            if ($ucFirst || $allCaps) {
+                $w = strtolower($originalWord);
+            }
+
             if (!isset($trans[$w])) {
-                $return[] = $w;
+                $return[] = $originalWord;
                 continue;
             }
 
             $translationCount = count($trans[$w]);
+
+            if ($ucFirst) {
+                $trans[$w] = array_map('ucfirst', $trans[$w]);
+            }
+
+            if ($allCaps) {
+                $trans[$w] = array_map('strtoupper', $trans[$w]);
+            }
 
             if (1 === $translationCount) {
                 $return[] = $trans[$w][0];
@@ -63,10 +80,34 @@ class Translator
             } elseif ($translationCount > 1 && $questionable == self::QUESTIONABLE_MARK) {
                 $return[] = '?'.implode('/', $trans[$w]).'?';
             } else {
-                $return[] = $w;
+                $return[] = $originalWord;
             }
         }
 
         return implode('', $return);
+    }
+
+    /**
+     * Is The First Letter Capital
+     *
+     * @param string $string
+     *
+     * @return bool
+     */
+    private function isFirstLetterUppercase($string)
+    {
+        return ucfirst(strtolower($string)) === $string;
+    }
+
+    /**
+     * IS EVERYTHING IN CAPITAL LETTERS
+     *
+     * @param string $string
+     *
+     * @return bool
+     */
+    private function isWholeStringUppercase($string)
+    {
+        return strtoupper($string) === $string;
     }
 }
