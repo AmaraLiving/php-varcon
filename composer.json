@@ -1,7 +1,6 @@
 {
   "name": "amara/varcon",
   "description": "A library to convert between different English spellings",
-  "version": "v0.10.0",
   "license": "MIT",
   "authors": [
     {
