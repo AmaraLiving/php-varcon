@@ -46,6 +46,10 @@ class HtmlCrawlerTest extends \PHPUnit_Framework_TestCase
                 $html = '<span unsupported="Text">Text text text</span>',
                 $changedHtml = '<span unsupported="Changed">Text text text</span>',
             ],
+            [
+                $html = '<span>Unchanged</span>',
+                $changedHtml = '<span>Unchanged</span>',
+            ],
         ];
     }
 }

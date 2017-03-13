@@ -13,7 +13,7 @@ class HtmlTranslatorTest extends \PHPUnit_Framework_TestCase
         $htmlTranslator = new HtmlTranslator();
 
         $this->assertSame(
-            '<p>Colour <strong>pyjama</strong> паралелепипед</p>', // Tests UTF8 characters as well
+            '<p>Colour <strong>pyjama</strong> &#1087;&#1072;&#1088;&#1072;&#1083;&#1077;&#1083;&#1077;&#1087;&#1080;&#1087;&#1077;&#1076;</p>', // Tests UTF8 characters as well
             $htmlTranslator->translate(
                 '<p>Color <strong>pajama</strong> паралелепипед</p>',
                 'A',
@@ -58,13 +58,12 @@ class HtmlTranslatorTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                $html = '<p>Text & text text</p>',
-                $translatedHtml = '<p>Translated &amp; translated translated</p>',
+                $html = '<p>Text & text text</p><p>More text</p><p>More text</p>',
+                $translatedHtml = '<p>Translated &amp; translated translated</p><p>More translated</p><p>More translated</p>',
             ],
             [
-                // Some day, this will stay as &bull; ..some ..day
                 $html = '<p>&bull; Text &amp; <strong>text</strong>: text</p>',
-                $translatedHtml = '<p>• Translated &amp; <strong>translated</strong>: translated</p>',
+                $translatedHtml = '<p>&bull; Translated &amp; <strong>translated</strong>: translated</p>',
             ],
             [
                 $html = '<img src="#" alt="Text text text">',

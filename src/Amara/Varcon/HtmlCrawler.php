@@ -48,15 +48,26 @@ class HtmlCrawler
         $this->stripDoctypeHtmlBodyAndHeadElements($document);
 
         $xpath = new DOMXPath($document);
+        $nodes = $xpath->query(implode('|', $this->xpathExpressions));
 
-        $textNodes = $xpath->query(implode('|', $this->xpathExpressions));
+        $isContentModified = false;
 
-        /** @var DOMNode $textNode */
-        foreach ($textNodes as $textNode) {
-            $textNode->nodeValue = $callable($textNode->nodeValue);
+        /** @var DOMNode $node */
+        foreach ($nodes as $node) {
+            $modifiedNodeValue = $callable($node->nodeValue);
+
+            if ($node->nodeValue != $modifiedNodeValue) {
+                $isContentModified = true;
+
+                $node->nodeValue = $modifiedNodeValue;
+            }
         }
 
-        return $document->saveHTML($document->documentElement);
+        if (false === $isContentModified) {
+            return $content;
+        }
+
+        return trim($document->saveHTML());
     }
 
     /**
