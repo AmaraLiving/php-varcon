@@ -39,10 +39,15 @@ class HtmlCrawler
      */
     public function crawlAndModify($content, callable $callable)
     {
-        $dom = new DOMDocument();
-        $dom->loadHTML($content, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD);
+        $document = new DOMDocument();
+        $document->loadHTML(mb_convert_encoding(
+            sprintf('<div>%s</div>', $content),
+            'HTML-ENTITIES',
+            'UTF-8'
+        ));
+        $this->stripDoctypeHtmlBodyAndHeadElements($document);
 
-        $xpath = new DOMXPath($dom);
+        $xpath = new DOMXPath($document);
 
         $textNodes = $xpath->query(implode('|', $this->xpathExpressions));
 
@@ -51,6 +56,26 @@ class HtmlCrawler
             $textNode->nodeValue = $callable($textNode->nodeValue);
         }
 
-        return $dom->saveHTML($dom->documentElement);
+        return $document->saveHTML($document->documentElement);
+    }
+
+    /**
+     * This method is a short hack to avoid incompatibilities between different PHP and Libxml setups. It has the same
+     * effect as passing the LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD flags to loadHtml's options
+     *
+     * @param DOMDocument $document
+     */
+    private function stripDoctypeHtmlBodyAndHeadElements(DOMDocument $document)
+    {
+        $container = $document->getElementsByTagName('div')->item(0);
+        $container = $container->parentNode->removeChild($container);
+
+        while ($document->firstChild) {
+            $document->removeChild($document->firstChild);
+        }
+
+        while ($container->firstChild) {
+            $document->appendChild($container->firstChild);
+        }
     }
 }

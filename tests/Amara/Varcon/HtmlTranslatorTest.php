@@ -13,9 +13,9 @@ class HtmlTranslatorTest extends \PHPUnit_Framework_TestCase
         $htmlTranslator = new HtmlTranslator();
 
         $this->assertSame(
-            '<p>Colour <strong>pyjama</strong> test</p>',
+            '<p>Colour <strong>pyjama</strong> паралелепипед</p>', // Tests UTF8 characters as well
             $htmlTranslator->translate(
-                '<p>Color <strong>pajama</strong> test</p>',
+                '<p>Color <strong>pajama</strong> паралелепипед</p>',
                 'A',
                 'B'
             )
