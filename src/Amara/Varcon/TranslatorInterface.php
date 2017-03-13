@@ -7,8 +7,25 @@ namespace Amara\Varcon;
  */
 interface TranslatorInterface
 {
+    /**
+     * In case of multiple translations available, don't translate (recommended)
+     *
+     * @var int
+     */
     const QUESTIONABLE_IGNORE = 0;
+
+    /**
+     * In case of multiple translations available, use the first
+     *
+     * @var int
+     */
     const QUESTIONABLE_INCLUDE = 1;
+
+    /**
+     * In case of multiple translations available, mark them ?like/so? (useful for debugging)
+     *
+     * @var int
+     */
     const QUESTIONABLE_MARK = 2;
 
     /**

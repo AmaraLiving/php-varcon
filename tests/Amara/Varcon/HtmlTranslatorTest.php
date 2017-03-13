@@ -32,11 +32,19 @@ class HtmlTranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $translator = $this->prophesize(Translator::class);
         $translator->translate(
-            Argument::any(),
-            Argument::any(),
-            Argument::any(),
-            Argument::any()
-        )->willReturn('Translated'); // Keep in mind we ignore whitespace this way
+            Argument::type('string'),
+            'A',
+            'B',
+            0
+        )->will(function ($arguments) {
+            $string = array_shift($arguments);
+
+            return str_replace(
+                ['Text', 'text'],
+                ['Translated', 'translated'],
+                $string
+            );
+        });
 
         $htmlTranslator = new HtmlTranslator($translator->reveal());
 
@@ -50,24 +58,25 @@ class HtmlTranslatorTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                $html = '<p>Text text text</p>',
-                $translatedHtml = '<p>Translated</p>',
+                $html = '<p>Text & text text</p>',
+                $translatedHtml = '<p>Translated &amp; translated translated</p>',
             ],
             [
-                $html = '<p>Text <strong>text</strong> text</p>',
-                $translatedHtml = '<p>Translated<strong>Translated</strong>Translated</p>',
+                // Some day, this will stay as &bull; ..some ..day
+                $html = '<p>&bull; Text &amp; <strong>text</strong>: text</p>',
+                $translatedHtml = '<p>• Translated &amp; <strong>translated</strong>: translated</p>',
             ],
             [
                 $html = '<img src="#" alt="Text text text">',
-                $translatedHtml = '<img src="#" alt="Translated">',
+                $translatedHtml = '<img src="#" alt="Translated translated translated">',
             ],
             [
                 $html = '<img src="#" title="Text text text">',
-                $translatedHtml = '<img src="#" title="Translated">',
+                $translatedHtml = '<img src="#" title="Translated translated translated">',
             ],
             [
                 $html = '<meta name="description" content="Text text text">',
-                $translatedHtml = '<meta name="description" content="Translated">',
+                $translatedHtml = '<meta name="description" content="Translated translated translated">',
             ],
         ];
     }
