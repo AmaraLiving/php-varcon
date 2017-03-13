@@ -99,8 +99,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException(\RuntimeException::class, sprintf(
             'Expected cluster to start with comment: %s',
-            $badCluster)
-        );
+            $badCluster
+        ));
         $util->get_cluster($badCluster);
     }
 
@@ -116,8 +116,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException(\RuntimeException::class, sprintf(
             'Could not extract headword from cluster: %s',
-            $badCluster)
-        );
+            $badCluster
+        ));
         $util->get_cluster($badCluster);
     }
 
@@ -133,8 +133,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
 
         $this->setExpectedException(\RuntimeException::class, sprintf(
             'Could not extract level from cluster: %s',
-            $badCluster)
-        );
+            $badCluster
+        ));
         $util->get_cluster($badCluster);
     }
 }
