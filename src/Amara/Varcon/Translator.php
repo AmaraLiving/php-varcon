@@ -5,12 +5,8 @@ namespace Amara\Varcon;
 /**
  * A translator/converter for different variations of the English spellings
  */
-class Translator
+class Translator implements TranslatorInterface
 {
-    const QUESTIONABLE_IGNORE = 0;
-    const QUESTIONABLE_INCLUDE = 1;
-    const QUESTIONABLE_MARK = 2;
-
     /**
      * @var TranslationProviderInterface
      */
@@ -31,14 +27,7 @@ class Translator
     }
 
     /**
-     * Translate/convert a string to another spelling
-     *
-     * @param string $string
-     * @param string $fromSpelling
-     * @param string $toSpelling
-     * @param int $questionable
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function translate($string, $fromSpelling, $toSpelling, $questionable = self::QUESTIONABLE_IGNORE)
     {
