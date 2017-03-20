@@ -81,9 +81,9 @@ class Translator implements TranslatorInterface
 
         if (1 === $translationCount) {
             return $translations[$word][0];
-        } elseif ($translationCount > 1 && $questionable == self::QUESTIONABLE_INCLUDE) {
+        } elseif ($translationCount > 1 && $questionable === self::QUESTIONABLE_INCLUDE) {
             return $translations[$word][0];
-        } elseif ($translationCount > 1 && $questionable == self::QUESTIONABLE_MARK) {
+        } elseif ($translationCount > 1 && $questionable === self::QUESTIONABLE_MARK) {
             return '?'.implode('/', $translations[$word]).'?';
         }
 
