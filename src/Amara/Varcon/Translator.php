@@ -38,42 +38,56 @@ class Translator implements TranslatorInterface
         $return = [];
 
         foreach ($words as $w) {
-            $originalWord = $w;
-
-            $ucFirst = $this->isFirstLetterUppercase($originalWord);
-            $allCaps = $this->isWholeStringUppercase($originalWord);
-
-            if ($ucFirst || $allCaps) {
-                $w = strtolower($originalWord);
-            }
-
-            if (!isset($trans[$w])) {
-                $return[] = $originalWord;
-                continue;
-            }
-
-            $translationCount = count($trans[$w]);
-
-            if ($ucFirst) {
-                $trans[$w] = array_map('ucfirst', $trans[$w]);
-            }
-
-            if ($allCaps) {
-                $trans[$w] = array_map('strtoupper', $trans[$w]);
-            }
-
-            if (1 === $translationCount) {
-                $return[] = $trans[$w][0];
-            } elseif ($translationCount > 1 && $questionable == self::QUESTIONABLE_INCLUDE) {
-                $return[] = $trans[$w][0];
-            } elseif ($translationCount > 1 && $questionable == self::QUESTIONABLE_MARK) {
-                $return[] = '?'.implode('/', $trans[$w]).'?';
-            } else {
-                $return[] = $originalWord;
-            }
+            $return[] = $this->translateWord($w, $trans, $questionable);
         }
 
         return implode('', $return);
+    }
+
+    /**
+     * Translate the given word according to the given translations array
+     * Having this in a separate function can help track single-word translations
+     *
+     * @param string $word
+     * @param array $translations
+     * @param int $questionable
+     *
+     * @return string
+     */
+    protected function translateWord($word, array $translations, $questionable = self::QUESTIONABLE_IGNORE)
+    {
+        $originalWord = $word;
+
+        $ucFirst = $this->isFirstLetterUppercase($originalWord);
+        $allCaps = $this->isWholeStringUppercase($originalWord);
+
+        if ($ucFirst || $allCaps) {
+            $word = strtolower($originalWord);
+        }
+
+        if (!isset($translations[$word])) {
+            return $originalWord;
+        }
+
+        $translationCount = count($translations[$word]);
+
+        if ($ucFirst) {
+            $translations[$word] = array_map('ucfirst', $translations[$word]);
+        }
+
+        if ($allCaps) {
+            $translations[$word] = array_map('strtoupper', $translations[$word]);
+        }
+
+        if (1 === $translationCount) {
+            return $translations[$word][0];
+        } elseif ($translationCount > 1 && $questionable === self::QUESTIONABLE_INCLUDE) {
+            return $translations[$word][0];
+        } elseif ($translationCount > 1 && $questionable === self::QUESTIONABLE_MARK) {
+            return '?'.implode('/', $translations[$word]).'?';
+        }
+
+        return $originalWord;
     }
 
     /**
