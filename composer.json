@@ -20,12 +20,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Amara\\Varcon\\": ["src/Amara/Varcon"]
+      "Amara\\Varcon\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Amara\\Varcon\\Tests\\": ["tests/Amara/Varcon"]
+      "Amara\\Varcon\\Tests\\": "tests"
     }
   }
 }

@@ -26,7 +26,7 @@ class TranslationProvider implements TranslationProviderInterface
     public function __construct($filePath = null, Util $util = null)
     {
         if (null === $filePath) {
-            $filePath = __DIR__ . '/../../../resources/varcon.txt';
+            $filePath = __DIR__ . '/../resources/varcon.txt';
         }
         if (null === $util) {
             $util = new Util();
