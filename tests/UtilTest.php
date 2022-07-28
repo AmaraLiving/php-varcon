@@ -3,7 +3,7 @@
 namespace Amara\Varcon\Tests;
 
 use Amara\Varcon\Util;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests edge-case exceptions where something is wrong with the file.
@@ -11,7 +11,7 @@ use PHPUnit_Framework_TestCase;
  *
  * @see TranslatorTest
  */
-class UtilTest extends PHPUnit_Framework_TestCase
+class UtilTest extends TestCase
 {
     /**
      * A A: absinthe / AV B: absinth | :1
@@ -49,7 +49,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
     {
         $util = new Util();
 
-        $this->setExpectedException(\RuntimeException::class, 'Invalid format, there should be 1 vertical line at most');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Invalid format, there should be 1 vertical line at most');
         $util->readline_no_expand('A: absinthe / AV B: absinth | :1 | Too much vertical lines');
     }
 
@@ -61,7 +62,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
     {
         $util = new Util();
 
-        $this->setExpectedException(\RuntimeException::class, 'Bad entry: A absinthe');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Bad entry: A absinthe');
         $util->readline_no_expand('A absinthe / AV B: absinth | :1');
     }
 
@@ -73,7 +75,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
     {
         $util = new Util();
 
-        $this->setExpectedException(\RuntimeException::class, 'Bad category: K');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Bad category: K');
         $util->readline_no_expand('K: absinthe / AV B: absinth | :1');
     }
 
@@ -97,7 +100,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
 
         $badCluster = 'absinthe <verified> (level 50)';
 
-        $this->setExpectedException(\RuntimeException::class, sprintf(
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf(
             'Expected cluster to start with comment: %s',
             $badCluster
         ));
@@ -114,7 +118,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
 
         $badCluster = '#  <verified> (level 50)';
 
-        $this->setExpectedException(\RuntimeException::class, sprintf(
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf(
             'Could not extract headword from cluster: %s',
             $badCluster
         ));
@@ -131,7 +136,8 @@ class UtilTest extends PHPUnit_Framework_TestCase
 
         $badCluster = '# absinthe <verified> (level )';
 
-        $this->setExpectedException(\RuntimeException::class, sprintf(
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(sprintf(
             'Could not extract level from cluster: %s',
             $badCluster
         ));

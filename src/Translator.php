@@ -33,7 +33,7 @@ class Translator implements TranslatorInterface
     {
         $trans = $this->provider->getTranslations($fromSpelling, $toSpelling);
 
-        $words = preg_split('/(\'?[^A-Za-z\']+\'?)/', $string, null, PREG_SPLIT_DELIM_CAPTURE);
+        $words = preg_split('/(\'?[^A-Za-z\']+\'?)/', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
 
         $return = [];
 

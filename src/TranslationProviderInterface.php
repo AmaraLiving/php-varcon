@@ -16,5 +16,5 @@ interface TranslationProviderInterface
      *
      * @return array
      */
-    public function getTranslations($from, $to, $threshold);
+    public function getTranslations($from, $to, $threshold = 80);
 }

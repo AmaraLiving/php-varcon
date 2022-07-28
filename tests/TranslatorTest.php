@@ -3,9 +3,10 @@
 namespace Amara\Varcon\Tests;
 
 use Amara\Varcon\Translator;
+use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_TestCase;
 
-class TranslatorTest extends PHPUnit_Framework_TestCase
+class TranslatorTest extends TestCase
 {
     /**
      * @var Translator
@@ -15,7 +16,7 @@ class TranslatorTest extends PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->translator = new Translator();
 

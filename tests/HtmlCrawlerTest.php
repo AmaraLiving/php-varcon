@@ -3,8 +3,9 @@
 namespace Amara\Varcon\Tests;
 
 use Amara\Varcon\HtmlCrawler;
+use PHPUnit\Framework\TestCase;
 
-class HtmlCrawlerTest extends \PHPUnit_Framework_TestCase
+class HtmlCrawlerTest extends TestCase
 {
     /**
      * @dataProvider provideCrawlAndModifyWithChangedXpathExpressions
