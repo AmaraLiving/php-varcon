@@ -49,7 +49,7 @@ class TranslationProvider implements TranslationProviderInterface
 
         $trans = [];
 
-        while (false !== ($line = stream_get_line($fileHandle, null, PHP_EOL.PHP_EOL))) {
+        while (false !== ($line = stream_get_line($fileHandle, PHP_INT_MAX, PHP_EOL.PHP_EOL))) {
             $d = $this->util->get_cluster($line);
 
             if ($d['level'] > $threshold) {
