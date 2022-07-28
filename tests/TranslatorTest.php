@@ -4,7 +4,6 @@ namespace Amara\Varcon\Tests;
 
 use Amara\Varcon\Translator;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_TestCase;
 
 class TranslatorTest extends TestCase
 {
